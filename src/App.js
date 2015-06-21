@@ -23,15 +23,36 @@ export default class App extends React.Component {
     this.unsubscribe();
   }
 
+  logActions() {
+    console.log(
+      window.copyActions()
+    )
+  }
+
+  replayActions() {
+    var jsonActions = prompt('replace actions', window.copyActions());
+    window.replayActions(jsonActions);
+  }
+
   render() {
-    return <Game
-      errors={this.state.errors}
-      usedLetters={this.state.usedLetters}
-      wordSoFar={wordSoFar(this.state.word, this.state.usedLetters)}
-      isGameWon={isGameWon(this.state)}
-      isGameLost={isGameLost(this.state)}
-      onNewLetter={this.handleNewLetter}
-      onResetGame={this.handleResetGame} />;
+    return (
+      <div>
+        <button onClick={() => {window.undo()}}>Undo</button>
+        <button onClick={() => {window.redo()}}>Redo</button>
+        <button onClick={this.logActions}>Log Actions</button>
+        <button onClick={this.replayActions}>Replay Actions</button>
+        <pre>
+        </pre>
+        <Game
+          errors={this.state.errors}
+          usedLetters={this.state.usedLetters}
+          wordSoFar={wordSoFar(this.state.word, this.state.usedLetters)}
+          isGameWon={isGameWon(this.state)}
+          isGameLost={isGameLost(this.state)}
+          onNewLetter={this.handleNewLetter}
+          onResetGame={this.handleResetGame} />
+      </div>
+    );
   }
 
   handleNewLetter(letter) {
